@@ -83,25 +83,28 @@ AI도 사람도 "끝"의 기준이 명확해야 헤매지 않습니다. 기준 �
 
 ### 백엔드
 
-- [ ] FastAPI 서버가 로컬에서 정상 실행된다 (`uvicorn main:app`)
-- [ ] `POST /api/convert` 엔드포인트가 존재한다
-- [ ] Upstage Solar-Pro2 API 호출이 정상 작동한다
-- [ ] 수신 대상(4종)에 따라 다른 프롬프트가 적용된다
-- [ ] CORS 설정이 되어 있어 프론트엔드에서 호출 가능하다
-- [ ] `.env` 파일로 API 키를 관리하고, `.gitignore`에 등록되어 있다
+- [x] FastAPI 서버가 로컬에서 정상 실행된다 (`uvicorn main:app`)
+- [x] Health Check 기능이 존재해야 한다
+- [x] `POST /api/convert` 엔드포인트가 존재한다
+- [x] Upstage Solar-Pro3 API 호출이 정상 작동한다
+- [x] 수신 대상(4종)에 따라 다른 프롬프트가 적용된다
+- [x] CORS 설정이 되어 있어 프론트엔드에서 호출 가능하다
+- [x] `.env` 파일로 API 키를 관리하고, `.gitignore`에 등록되어 있다
+- [x] FastAPI 서버에 Staic Page(`index.html`) 라우팅 기능이 있어야 한다
 
 ### 프론트엔드
 
-- [ ] 텍스트 입력창이 있다
-- [ ] 수신 대상 선택 버튼이 있다 (4종)
-- [ ] [변환하기] 버튼 클릭 시 API를 호출한다
-- [ ] 처리 중 로딩 표시가 나타난다
-- [ ] 변환 결과가 화면에 출력된다
-- [ ] [복사하기] 버튼이 작동한다
+- [x] 텍스트 입력창이 있다
+- [x] 수신 대상 선택 버튼이 있다 (4종)
+- [x] [변환하기] 버튼 클릭 시 API를 호출한다
+- [x] 처리 중 로딩 표시가 나타난다
+- [x] 변환 결과가 화면에 출력된다
+- [x] [복사하기] 버튼이 작동한다
 
 ### 배포
 
 - [ ] GitHub 레포지토리에 코드가 올라가 있다
+- [ ] Vercel 에 프론트엔드와 백엔드를 같이 배포한다
 - [ ] Vercel에서 프론트엔드가 정상 접속된다
 - [ ] 배포된 URL에서 실제 변환이 작동한다
 
@@ -113,11 +116,11 @@ AI도 사람도 "끝"의 기준이 명확해야 헤매지 않습니다. 기준 �
 |------|------|------|
 | 프론트엔드 | HTML5 / CSS3 / JavaScript (ES6+) | 프레임워크 없음 |
 | 백엔드 | Python 3.11+ / FastAPI / Uvicorn | |
-| AI 연동 | LangChain / langchain-upstage | |
-| AI 모델 | Upstage Solar-Pro2 | |
+| AI 연동 | 최신 langchain / langchain-upstage | |
+| AI 모델 | Upstage Solar-Pro3 | |
 | 환경 변수 | python-dotenv | `.env` 파일 관리 |
 | 버전 관리 | Git / GitHub | |
-| 배포 | Vercel | 프론트엔드 정적 배포 |
+| 배포 | Vercel | 프론트엔드와 백엔드 배포 |
 
 ### 사전 준비
 
@@ -151,7 +154,7 @@ UPSTAGE_API_KEY=your_api_key_here
 |----|------|------|
 | F-01 | 텍스트 입력 | 사용자가 변환할 원문을 자유롭게 입력 |
 | F-02 | 수신 대상 선택 | 상사 / 타팀 동료 / 고객 / 팀 내 동료 중 선택 |
-| F-03 | 말투 변환 처리 | FastAPI → LangChain → Solar-Pro2 호출 |
+| F-03 | 말투 변환 처리 | FastAPI → LangChain → Solar-Pro3 호출 |
 | F-04 | 결과 출력 | 변환된 텍스트를 화면에 표시 |
 | F-05 | 로딩 표시 | API 호출 중 처리 중 상태 표시 |
 | F-06 | 결과 복사 | 변환 결과를 클립보드에 복사 |
@@ -197,7 +200,7 @@ PROMPTS = {
 ## 6. 디렉토리 구조
 
 ```
-biztone-converter/
+biztalk_antigravity/
 │
 ├── backend/
 │   ├── main.py                 # FastAPI 앱 + CORS 설정
@@ -219,9 +222,9 @@ biztone-converter/
 │   │   └── style.css
 │   └── js/
 │       └── app.js
-│
+├── .env                    # API 키 (git 제외)
 ├── .gitignore
-└── README.md
+└── PRD_업무말투변환기.md
 ```
 
 ---
@@ -281,19 +284,20 @@ Content-Type: application/json
 
 ## 8. 단계별 구현 순서
 
-### STEP 1. 환경 준비 (30분)
+### [x] STEP 1. 환경 준비
 
-1. GitHub 레포지토리 생성 (`biztone-converter`)
+1. GitHub 레포지토리 생성 (`biztalk_antigravity`)
 2. 디렉토리 구조 생성
 3. `.gitignore` 작성 — `.env` 반드시 포함
 4. Upstage API 키 발급 및 `.env` 파일 작성
-5. `requirements.txt` 작성 및 패키지 설치
+5. `requirements.txt` 작성하고 의존성의 버전(use context7)을 명시해야 함
+6. 가상환경(`venv`) 폴더를 생성하고 `requirements.txt` 명시된 의존성을 가상환경에 설치해야 함
 
 ---
 
-### STEP 2. 백엔드 구현 (90분)
+### [x] STEP 2. 백엔드 구현 
 
-> 원칙 2 적용: 구현 전 Solar-Pro2 연동 방식을 먼저 확인하세요.
+> 원칙 2 적용: 구현 전 Solar-Pro3 연동 방식을 먼저 확인하세요.
 
 **구현 순서**
 
@@ -340,7 +344,7 @@ app.include_router(convert.router, prefix="/api")
 
 ---
 
-### STEP 3. 프론트엔드 구현 (60분)
+### [x] STEP 3. 프론트엔드 구현
 
 **구현 순서**
 
@@ -386,7 +390,7 @@ async function convertTone() {
 
 ---
 
-### STEP 4. 배포 (30분)
+### STEP 4. 배포
 
 > 배포 전 셀프 체크: 프론트엔드 → 백엔드 → LLM의 흐름을 말로 설명할 수 있는가?
 
@@ -402,7 +406,7 @@ async function convertTone() {
 ### 환경 파악 (원칙 2)
 
 ```
-Upstage Solar-Pro2를 LangChain으로 연동하는 최신 방법을 알려줘.
+Upstage Solar-Pro3를 LangChain으로 연동하는 최신 방법을 알려줘.
 어떤 패키지를 설치해야 하고, ChatUpstage 클래스는 어떻게 사용하는지
 코드 없이 방법만 먼저 설명해줘.
 ```
@@ -418,7 +422,7 @@ Upstage Solar-Pro2를 LangChain으로 연동하는 최신 방법을 알려줘.
 - 응답: { converted_text: string, target_audience: string, original_text: string }
 - target_audience는 boss / colleague / client / team 4종
 - 각 대상마다 다른 시스템 프롬프트 적용
-- Upstage Solar-Pro2 API 사용
+- Upstage Solar-Pro3 API 사용
 - .env에서 UPSTAGE_API_KEY 로드
 - CORS 허용
 
@@ -441,7 +445,7 @@ CORS policy: No 'Access-Control-Allow-Origin' header is present
 ### 프론트엔드 수정 요청
 
 ```
-index.html에서 수신 대상 버튼을 클릭하면 active 클래스가 토글되도록 해줘.
+index.html에서 수신 대상 버튼을 클릭하면 active 클래스가 토글 되도록 해줘.
 한 번에 하나만 선택되어야 하고,
 선택된 버튼은 배경색이 파란색으로 바뀌어야 해.
 CSS도 같이 수정해줘.
