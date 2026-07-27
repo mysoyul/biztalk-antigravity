@@ -1,7 +1,9 @@
 backend/.env
 .env
 
-.agents/
+# skills, mcp
+#.agents/
+
 filtered_repos.json
 repos.json
 all_repos.json
