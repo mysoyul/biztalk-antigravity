@@ -394,10 +394,11 @@ async function convertTone() {
 
 > 배포 전 셀프 체크: 프론트엔드 → 백엔드 → LLM의 흐름을 말로 설명할 수 있는가?
 
-1. GitHub에 전체 코드 푸시
-2. Vercel에서 `frontend/` 디렉토리 연결
+1. GitHub에 전체 코드 Push 되어 있음
+2. Vercel에 `frontend/` 와 `backend` 디렉토리 연결
+ - 프론트엔드와 백엔드를 모두 Vercel에 같이 배포하기
 3. `app.js`의 `API_BASE`를 실제 백엔드 URL로 수정
-4. 배포 후 실제 URL에서 동작 확인
+4. vercel.json 파일 작성하기
 
 ---
 
